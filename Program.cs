@@ -19,46 +19,159 @@ namespace dsproje2
 
             string[] yemekCesidi = { "pizza", "pide", "kebap", "patlıcan musakka", "mantı", "sarma", "mercimek köftesi", "hamburger" };
 
-            Random rnd = new Random(7);
+            Random rnd = new Random();
 
-
+            //###################################### 1A   ################################################
             //Bir arraylist oluşturup  for döngüsü ile her indeksine birer mahallesınıfı objesi koyuyorum:
             ArrayList Moto_Kurye = new ArrayList();
 
             for (int i = 0; i < MahalleAdı.Length; i++)
             {
-                int index = rnd.Next();
-
+              
                 MahalleSınıfı tempMh = new MahalleSınıfı(MahalleAdı[i]);
 
                 for(int j = 0; j < TeslimatSayısı[i]; j++)
-                {
-                    
-                    tempMh.liste.Add(new TeslimatSınıfı(yemekCesidi[rnd.Next(7)], rnd.Next(10)));
-
+                {                  
+                    tempMh.liste.Add(new TeslimatSınıfı(yemekCesidi[rnd.Next(7)+1], rnd.Next(5)+1));
 
                 }
-                Moto_Kurye.Add(tempMh);
-                Console.WriteLine(Moto_Kurye[i]);
+                Moto_Kurye.Add(tempMh);            
                          
             }
 
-
-            //KONTROL KISMI::
-
-
+            //###################################### 1B   ################################################
+            //  BİLEŞİK VERİ YAPILI MOTO_KURYE ARRAYLİSTİ YAZDIRIYORUZ
 
 
+            for(int i = 0; i < MahalleAdı.Length; i++)
+            {
+                //mahalle adı:
+                Console.WriteLine(((MahalleSınıfı)Moto_Kurye[i]).mahalleAdı);
+               
+                for(int j = 0; j < TeslimatSayısı[i]; j++)
+                {
+                    //bu mahalleye verilen siparişlerin  detayı:
+                    Console.Write(((MahalleSınıfı)Moto_Kurye[i]).liste[j].adet);
+                    Console.Write("   ");
+                    Console.WriteLine(((MahalleSınıfı)Moto_Kurye[i]).liste[j].yemekAdı);
+                }
+            }
 
-            ArrayList a = new ArrayList();
-            TeslimatSınıfı t = new TeslimatSınıfı("et", 3);
-            TeslimatSınıfı t2 = new TeslimatSınıfı("köfte", 4);
-            MahalleSınıfı m = new MahalleSınıfı("erzene");
-            m.liste.Add(t);
-            m.liste.Add(t2);
-            a.Add(m);
 
-            Console.WriteLine(a[0].liste[0].yemekAdı);
+
+            Console.WriteLine("################################################");
+            //###################################### 1C  ################################################
+            // Arraylistteki toplam eleman (liste) sayısı ve toplam teslimat sayısını bulan kod:
+            int elemanSayısı = 0;
+            int teslimatToplam = 0;
+            for (int i = 0; i < MahalleAdı.Length; i++)
+            {
+                elemanSayısı++;
+
+                //teslimat sayısı için;
+                teslimatToplam += TeslimatSayısı[i];
+
+
+            }
+
+            Console.Write("Eleman sayısı : ");
+            Console.WriteLine(elemanSayısı);
+            Console.Write("Toplam teslimat sayısı: ");
+            Console.WriteLine(teslimatToplam);
+
+
+
+
+            //###################################### 2A  ################################################
+            // 1a kısmında arrayliste atadığımız tüm bilgileri bu sefer stack içinde tutuyoruz:
+            Stack_Moto_Kurye s = new Stack_Moto_Kurye(MahalleAdı.Length);
+            for (int i = 0; i < MahalleAdı.Length; i++)
+            {
+
+                MahalleSınıfı tempMh = new MahalleSınıfı(MahalleAdı[i]);
+
+                for (int j = 0; j < TeslimatSayısı[i]; j++)
+                {
+                    tempMh.liste.Add(new TeslimatSınıfı(yemekCesidi[rnd.Next(7) + 1], rnd.Next(5) + 1));
+
+                }
+                s.push(tempMh);
+
+            }
+
+
+            //Yığıttaki elemanları yazdıran kod:
+            // ÖNEMLİ: MOTO_KURYE ARRAYLİSTİNİ KOPYALAMADAN YENİ RANDOM YEMEK ÇEŞİDİ VE SAYISI DEĞERLERİ İLE OLUŞTURULDUĞUNDAN STACK İLE ARRAYLİST TIPTAIP AYNI DEĞİL,
+            // MAHALLE ADLARI VE KARŞILIK GELEN TESLİMAT SAYILARI AYNI
+            Console.WriteLine("################################################");
+            for (int i = 0; i < MahalleAdı.Length; i++)
+            {
+
+                MahalleSınıfı m = s.pop();
+                Console.WriteLine(m.mahalleAdı);
+
+               
+                //stack veri yapısında objeler sondan başlayarak çıktığı için:
+                for (int j = 0; j < TeslimatSayısı[(MahalleAdı.Length-1) - i]; j++)
+                {
+                    Console.Write(m.liste[j].adet);
+                    Console.Write("   ");
+                    Console.WriteLine(m.liste[j].yemekAdı);
+                   
+
+                }
+               
+
+            }
+
+
+
+            //###################################### 2B  ################################################
+            // 1a kısmında arrayliste atadığımız tüm bilgileri bu sefer queue içinde tutuyoruz:
+            Queue_Moto_Kurye q= new Queue_Moto_Kurye(MahalleAdı.Length);
+            for (int i = 0; i < MahalleAdı.Length; i++)
+            {
+
+                MahalleSınıfı tempMh = new MahalleSınıfı(MahalleAdı[i]);
+
+                for (int j = 0; j < TeslimatSayısı[i]; j++)
+                {
+                    tempMh.liste.Add(new TeslimatSınıfı(yemekCesidi[rnd.Next(7) + 1], rnd.Next(5) + 1));
+
+                }
+                q.insert(tempMh);
+
+            }
+
+
+            //Kuruktaki elemanları yazdıran kod:
+            // ÖNEMLİ: MOTO_KURYE ARRAYLİSTİNİ KOPYALAMADAN YENİ RANDOM YEMEK ÇEŞİDİ VE SAYISI DEĞERLERİ İLE OLUŞTURULDUĞUNDAN KUYRUK İLE ARRAYLİST TIPTAIP AYNI DEĞİL,
+            // MAHALLE ADLARI VE KARŞILIK GELEN TESLİMAT SAYILARI AYNI
+            Console.WriteLine("################################################");
+            for (int i = 0; i < MahalleAdı.Length; i++)
+            {
+
+                MahalleSınıfı m = q.remove();
+                Console.WriteLine(m.mahalleAdı);
+
+
+
+                for (int j = 0; j < TeslimatSayısı[i]; j++)
+                {
+                    Console.Write(m.liste[j].adet);
+                    Console.Write("   ");
+                    Console.WriteLine(m.liste[j].yemekAdı);
+
+
+                }
+
+
+            }
+
+
+
+
+
 
 
 
@@ -67,7 +180,7 @@ namespace dsproje2
 
         }
     }
-
+  
     class MahalleSınıfı
     {
         public string mahalleAdı;
@@ -93,4 +206,123 @@ namespace dsproje2
 
         }
     }
+
+
+
+    //Chapter 4teki stackı güncelledim
+    class Stack_Moto_Kurye
+    {
+        private int maxSize; // size of stack array
+        private MahalleSınıfı[] stackArray;
+        private int top; // top of stack
+    //-------------------------------------------------------------
+
+     public Stack_Moto_Kurye(int s) // constructor
+            {
+                maxSize = s; // set array size
+                stackArray = new MahalleSınıfı[maxSize]; // create array
+                top = -1; // no items yet
+            }
+    //-------------------------------------------------------------
+    
+     public void push(MahalleSınıfı j) // put item on top of stack
+            {
+                stackArray[++top] = j; // increment top, insert item
+            }
+    //-------------------------------------------------------------
+    
+     public MahalleSınıfı pop() // take item from top of stack
+            {
+                return stackArray[top--]; // access item, decrement top
+            }
+    //-------------------------------------------------------------
+    
+     public MahalleSınıfı peek() // peek at top of stack
+            {
+                return stackArray[top];
+            }
+    //-------------------------------------------------------------
+    
+     public bool isEmpty() // true if stack is empty
+            {
+                return(top == -1);
+            }
+    //-------------------------------------------------------------
+    
+     public bool isFull() // true if stack is full
+            {
+                return (top == maxSize - 1);
+            }
+        //-------------------------------------------------------------
+
+    } // end class Stack_Moto_Kurye
+
+
+
+
+    //Chapter 4teki Queue'yu güncelledim
+    class Queue_Moto_Kurye
+    {
+        private int maxSize;
+        private MahalleSınıfı[] queArray;
+        private int front;
+        private int rear;
+        private int nItems;
+    //-------------------------------------------------------------
+    
+     public Queue_Moto_Kurye(int s) // constructor
+            {
+                maxSize = s;
+                queArray = new MahalleSınıfı[maxSize];
+                front = 0;
+                rear = -1;
+                nItems = 0;
+            }
+    //-------------------------------------------------------------
+    
+     public void insert(MahalleSınıfı j) // put item at rear of queue
+            {
+                if (rear == maxSize - 1) // deal with wraparound
+                    rear = -1;
+                queArray[++rear] = j; // increment rear and  insert
+                 nItems++; // one more item
+            }
+    //-------------------------------------------------------------
+    
+     public MahalleSınıfı remove() // take item from front of queue
+            {
+                MahalleSınıfı temp = queArray[front++]; // get value and incr front
+                if (front == maxSize) // deal with wraparound
+                    front = 0;
+                nItems--; // one less item
+                return temp;
+            }
+    //-------------------------------------------------------------
+    
+     public MahalleSınıfı peekFront() // peek at front of queue
+            {
+               
+            return queArray[front];
+            }
+    //-------------------------------------------------------------
+    
+     public bool isEmpty() // true if queue is empty
+            {
+                return (nItems == 0);
+            }
+    //-------------------------------------------------------------
+    
+     public bool isFull() // true if queue is full
+            {
+                return (nItems == maxSize);
+            }
+    //-------------------------------------------------------------
+    
+     public int size() // number of items in queue
+            {
+                return nItems;
+            }
+    //-------------------------------------------------------------
+    
+     } // end class Queue
 }
