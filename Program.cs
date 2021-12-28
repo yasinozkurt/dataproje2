@@ -172,6 +172,37 @@ namespace dsproje2
 
 
 
+            //###################################### 3A  ################################################
+            Console.WriteLine("################################################");
+            //Öncelikli kuyruğa verilerimizi ekliyoruz:
+            PriorityQueue pq = new PriorityQueue();
+            for (int i = 0; i < MahalleAdı.Length; i++)
+            {
+                // aynı referansı tutuyorlar ancak biz listede bir değişiklik yapmayacağımızdan bir dezavantajı bulunmuyor.
+                pq.insert((MahalleSınıfı)Moto_Kurye[i]);
+
+            }
+
+            //###################################### 3A test ################################################
+
+           for(int i = 0; i < MahalleAdı.Length; i++)
+            {
+                Console.WriteLine((pq.remove()).mahalleAdı);
+                Console.WriteLine(pq.isEmpty());
+
+            }
+
+            //############# 3B #############
+            //Öncelikli Kuyruğun gerçekleştiriminde altyapıda mahallelerin tutulmasında List yerine dizi kullanılırsa kuyruktan her eleman çıkardığımızda manuel olarak dizi içerisinde 
+            //kaydırma yapmamız gerekir. List veri yapısı bunu otomatik yapıyor.
+
+
+
+
+
+
+
+
 
 
 
@@ -325,4 +356,78 @@ namespace dsproje2
     //-------------------------------------------------------------
     
      } // end class Queue
+
+
+
+
+    //Öncelikli Kuyruk Sınıfı
+    class PriorityQueue
+    {
+
+       
+        private List<MahalleSınıfı> queArray;
+       
+       
+        private int nItems;
+
+
+
+
+        public PriorityQueue()
+        {
+            
+            queArray = new List<MahalleSınıfı>();
+          
+           
+            nItems = 0;
+           
+        }
+
+        public void insert(MahalleSınıfı m)
+        {
+            queArray.Add(m);
+            nItems++;
+        }
+        public MahalleSınıfı remove()
+        {
+            //burada en fazla teslimat yapılan mahalleyi arıyoruz:
+            //pivot değer bulalım:
+            int Max = -1;
+            int MaxIndeks = -1;
+            //pivottan ve diğerlerinden büyük olan değeri bulalım:
+            
+            
+            for(int i = 0; i < nItems; i++)
+            {
+                MahalleSınıfı tempM = queArray[i];
+                
+                int tempMax = 0;
+                int adet = tempM.liste.Count;
+                while (adet != 0) 
+                {
+                    adet--;
+                    tempMax++;
+    
+                }
+                if (tempMax > Max)
+                {
+                    Max = tempMax;
+                    MaxIndeks = i;
+                }
+
+            }
+            nItems--;
+            MahalleSınıfı rM = queArray[MaxIndeks];
+            queArray.RemoveAt(MaxIndeks);
+
+            return rM ;
+        }
+
+
+        public bool isEmpty()
+        {
+            return (nItems == 0);
+        }
+
+    }
 }
