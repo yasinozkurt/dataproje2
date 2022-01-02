@@ -22,28 +22,38 @@ namespace dsproje2
             Random rnd = new Random();
 
             //###################################### 1A   ################################################
+           
             //Bir arraylist oluşturup  for döngüsü ile her indeksine birer mahallesınıfı objesi koyuyorum:
             ArrayList Moto_Kurye = new ArrayList();
 
-            for (int i = 0; i < MahalleAdı.Length; i++)
+            void ElemanEkle()
             {
-              
-                MahalleSınıfı tempMh = new MahalleSınıfı(MahalleAdı[i]);
+                for (int i = 0; i < MahalleAdı.Length; i++)
+                {
 
-                for(int j = 0; j < TeslimatSayısı[i]; j++)
-                {                  
-                    tempMh.liste.Add(new TeslimatSınıfı(yemekCesidi[rnd.Next(7)+1], rnd.Next(5)+1));
+                    MahalleSınıfı tempMh = new MahalleSınıfı(MahalleAdı[i]);
+
+                    for (int j = 0; j < TeslimatSayısı[i]; j++)
+                    {
+                        tempMh.liste.Add(new TeslimatSınıfı(yemekCesidi[rnd.Next(7) + 1], rnd.Next(5) + 1));
+
+                    }
+                    Moto_Kurye.Add(tempMh);
 
                 }
-                Moto_Kurye.Add(tempMh);            
-                         
+
             }
+            //Method:
+            ElemanEkle();
+
+
 
             //###################################### 1B   ################################################
+         
             //  BİLEŞİK VERİ YAPILI MOTO_KURYE ARRAYLİSTİ YAZDIRIYORUZ
 
 
-            for(int i = 0; i < MahalleAdı.Length; i++)
+            for (int i = 0; i < MahalleAdı.Length; i++)
             {
                 //mahalle adı:
                 Console.WriteLine(((MahalleSınıfı)Moto_Kurye[i]).mahalleAdı);
@@ -144,7 +154,7 @@ namespace dsproje2
             }
 
 
-            //Kuruktaki elemanları yazdıran kod:
+            //Kuyruktaki elemanları yazdıran kod:
             // ÖNEMLİ: MOTO_KURYE ARRAYLİSTİNİ KOPYALAMADAN YENİ RANDOM YEMEK ÇEŞİDİ VE SAYISI DEĞERLERİ İLE OLUŞTURULDUĞUNDAN KUYRUK İLE ARRAYLİST TIPTAIP AYNI DEĞİL,
             // MAHALLE ADLARI VE KARŞILIK GELEN TESLİMAT SAYILARI AYNI
             Console.WriteLine("################################################");
